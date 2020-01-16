@@ -80,23 +80,17 @@ fastai之前，这篇论文并没有这么多关注量。
 不能使用这个功能。这是由于fastai太过于集成化，他致力于让神经网络不再复杂。
 在pytorch下
 
-     
+
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
     model = models.resnet50(pretrained=True).to(device)
-
     for param in model.parameters():
         param.requires_grad = False   
-
     model.fc = nn.Sequential(
                nn.Linear(2048, 128),
                nn.ReLU(inplace=True),
                nn.Linear(128, 2)).to(device)
-
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.fc.parameters())
-   
-
     learn = create_cnn(data, models.resnet50, metrics=accuracy)
     
 就可以了。这样看起来的确做到了让神经网络不再复杂的目的，但是这样就会导致一些问题。
