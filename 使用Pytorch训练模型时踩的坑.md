@@ -72,35 +72,42 @@ fastai就是根据这篇文章的LR核心思想做出来的，可以说fastai和
 fastai之前，这篇论文并没有这么多关注量。
 
 开始说坑：
-1. 我安装的是 1.0.61.dev0 版本，属于测试版。而官方的文档的稳定版的文档。测试版的文档将
+一、我安装的是 1.0.61.dev0 版本，属于测试版。而官方的文档的稳定版的文档。测试版的文档将
 有些类下的函数移到了不同的位置。比如说：在稳定版中basic_train类下有lr_find()函数，而测试版
 则没有，但他还存在basic_train这个类，而且文档中并没有说明，就很迷。你使用了basic_train类，却告诉你没有lr_find()方法。
 
-2. 我之前通过checkpoint来牺牲时间换空间，使得模型能够在我的小12G的卡上跑，但是使用fastai却
+二、我之前通过checkpoint来牺牲时间换空间，使得模型能够在我的小12G的卡上跑，但是使用fastai却
 不能使用这个功能。这是由于fastai太过于集成化，他致力于让神经网络不再复杂。
 在pytorch下
 
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    
     model = models.resnet50(pretrained=True).to(device)
+    
     for param in model.parameters():
         param.requires_grad = False   
+    
     model.fc = nn.Sequential(
                nn.Linear(2048, 128),
                nn.ReLU(inplace=True),
                nn.Linear(128, 2)).to(device)
+    
     criterion = nn.CrossEntropyLoss()
+    
     optimizer = optim.Adam(model.fc.parameters())
+    
     learn = create_cnn(data, models.resnet50, metrics=accuracy)
+  
     
 就可以了。这样看起来的确做到了让神经网络不再复杂的目的，但是这样就会导致一些问题。
 比如checkpoint操作需要分两步计算网络输出，而不是直接由Pytorch调用
 默认的forward()函数计算输出，而在fastai中，由于fastai过度集成化使得你无法进行类似的操作。
 
-3. 第三点其实和第二点很相似，我习惯于将网络输出之后再进行softmax()，然而在fastai中，
+三、第三点其实和第二点很相似，我习惯于将网络输出之后再进行softmax()，然而在fastai中，
 只能在搭建网络时将softmax加到foward()中，即fastai没有办法直接拿到output并进行操作。
 
-4. 我想要计算多个metrics，fastai显得很无力，说到底和fastai的过度集成化有关
+四、我想要计算多个metrics，fastai显得很无力，说到底和fastai的过度集成化有关
 
 总结下来，fastai可以作为一个寻找最优学习率的方法，但是往大了说还没有那么大的用处，毕竟
 自适应optimizer已经很好用了，论文中说他们这种方式比自适应optimizer优点就是不需要增大计算量，
