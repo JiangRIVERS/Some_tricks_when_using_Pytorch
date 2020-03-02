@@ -132,6 +132,25 @@ with torch.no_grad()和model.eval()的区别：
 with torch.no_grad()是将Tensor的梯度设为False而model.eval()是用于在测试时
 关闭BN层和Dropout层。
 
+### 7. Pytorch 中retain_graph 参数的作用
+参考：https://oldpan.me/archives/pytorch-retain_graph-work
+
+retain_graph用于将计算图中的中间变量在计算完后保存，在平时使用中默认为False，
+此时计算图中的中间变量在计算之后被释放，用于而提高效率。
+
+但在特殊的场合，尤其是最近在研究Gan网络，这个时候有多个loss需要被bp算法
+反向传播回去，这个时候，如果retain_graph是默认值False的话，参数会在
+第一个loss反向传播之后被释放，导致后续的loss没办法反向传播，从而引发错误。
+此时需要
+```
+output1.backward(retain_graph=True)
+```
+而output2则不需要，即
+```
+output2.backward()
+```
+即可。
+
 
 
 
