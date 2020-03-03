@@ -164,6 +164,8 @@ export https_proxy=socks5://127.0.0.1:1087
 ```
 其中的127.0.0.1:1087需要和shadowsocks里的preference中相对应
 
+或者更直接的将shadowsocks的全局模式打开
+
 
 
     
