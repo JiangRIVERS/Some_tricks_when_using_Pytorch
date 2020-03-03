@@ -151,6 +151,18 @@ output2.backward()
 ```
 即可。
 
+### 8. Terminal 翻墙
+
+在国内访问google等外网需要梯子，然而当我们使用shadowsocks之后，虽然网页可以正常
+访问google了，但是terminal里还是不可以。导致在terminal里安装东西需要镜像，而在terminal
+里访问google就更加的麻烦。
+
+解决方法：在 ~/.bash_profile中加入
+```
+export http_proxy=socks5://127.0.0.1:1087
+export https_proxy=socks5://127.0.0.1:1087
+```
+其中的127.0.0.1:1087需要和shadowsocks里的preference中相对应
 
 
 
