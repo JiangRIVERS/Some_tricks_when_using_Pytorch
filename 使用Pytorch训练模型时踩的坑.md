@@ -166,6 +166,14 @@ export https_proxy=socks5://127.0.0.1:1087
 
 或者更直接的将shadowsocks的全局模式打开
 
+## 9. Pandas读取xlsx文件中多个sheet
+当xlsx文件中有多个sheet时，如何读取某个sheet呢？
+```python
+xls = pd.ExcelFile('path_to_file.xls')
+df1 = pd.read_excel(xls, 'Sheet1') # Sheet更换成你的sheet名字
+df2 = pd.read_excel(xls, 'Sheet2')
+```
+
 
 
     
