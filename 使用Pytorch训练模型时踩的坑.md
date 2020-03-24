@@ -11,16 +11,19 @@
 例如：
 > 当你有编号为：0,1,2,3 共四张卡进行训练，你想使用1号gpu进行训练。这个时候输入
 >
->      torch.cuda.device_count()
+>```python
+>torch.cuda.device_count()
+>```
 >则会返回4，代表现在可用4张卡，单卡时Pytorch默认使用0号gpu,多卡时默认使用4块卡。此时输入
->
->     os.environ["CUDA_VISIBLE_DEVICES"]="1"
->
+>```python
+>os.environ["CUDA_VISIBLE_DEVICES"]="1"
+>```
 >这行代码代表现在只有1号gpu是可见的，其余不可见
 >
 >此时
->
->     torch.cuda.device_count()
+>```python
+>torch.cuda.device_count()
+>```
 >则会返回1，Pytorch使用1号gpu进行训练。同理使用多卡。
 
 这个地方有一个坑：
