@@ -80,25 +80,25 @@ fastai之前，这篇论文并没有这么多关注量。
 不能使用这个功能。这是由于fastai太过于集成化，他致力于让神经网络不再复杂。
 在pytorch下
 
-
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+```python
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     
-    model = models.resnet50(pretrained=True).to(device)
+model = models.resnet50(pretrained=True).to(device)
     
-    for param in model.parameters():
-        param.requires_grad = False   
+for param in model.parameters():
+    param.requires_grad = False   
     
-    model.fc = nn.Sequential(
-               nn.Linear(2048, 128),
-               nn.ReLU(inplace=True),
-               nn.Linear(128, 2)).to(device)
+model.fc = nn.Sequential(
+            nn.Linear(2048, 128),
+            nn.ReLU(inplace=True),
+            nn.Linear(128, 2)).to(device)
     
-    criterion = nn.CrossEntropyLoss()
+criterion = nn.CrossEntropyLoss()
     
-    optimizer = optim.Adam(model.fc.parameters())
+optimizer = optim.Adam(model.fc.parameters())
     
-    learn = create_cnn(data, models.resnet50, metrics=accuracy)
-  
+learn = create_cnn(data, models.resnet50, metrics=accuracy)
+```  
     
 就可以了。这样看起来的确做到了让神经网络不再复杂的目的，但是这样就会导致一些问题。
 比如checkpoint操作需要分两步计算网络输出，而不是直接由Pytorch调用
@@ -121,7 +121,7 @@ fastai之前，这篇论文并没有这么多关注量。
 
 解决方法:
 在测试时
-```
+```python
 with torch.no_grad():
     output=model(input)
 ```
@@ -142,11 +142,11 @@ retain_graph用于将计算图中的中间变量在计算完后保存，在平�
 反向传播回去，这个时候，如果retain_graph是默认值False的话，参数会在
 第一个loss反向传播之后被释放，导致后续的loss没办法反向传播，从而引发错误。
 此时需要
-```
+```python
 output1.backward(retain_graph=True)
 ```
 而output2则不需要，即
-```
+```python
 output2.backward()
 ```
 即可。
