@@ -177,6 +177,14 @@ df1 = pd.read_excel(xls, 'Sheet1') # Sheet更换成你的sheet名字
 df2 = pd.read_excel(xls, 'Sheet2')
 ```
 
+## 10. unzip 中文文件出现乱码
+使用公司电脑训练模型，公司电脑是windows,在压缩文件时默认编码是gbk，因而在
+深度学习平台（Linux）进行unzip时出现乱码，当时想法特别蠢，写了段代码将文件名（中文）按
+阿拉伯数字进行编码，结果人家unzip直接有参数可以使用GBK编码读取...我....
+```
+unzip -O GBK xxx.zip
+```
+
 
 
     
