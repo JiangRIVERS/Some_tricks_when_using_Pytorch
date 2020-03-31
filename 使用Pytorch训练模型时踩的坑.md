@@ -185,6 +185,31 @@ df2 = pd.read_excel(xls, 'Sheet2')
 unzip -O GBK xxx.zip
 ```
 
+## 11. cv2.imread返回NoneType问题
+问题一般是由文件名带中文，而windows下编码是gbk编码，所以导致中文不识别，问题不是cv2
+不能读取路径，而是路径计算机就不识别。
 
+解决方法
+```python
+import cv2
+import numpy as np
+cv2.imdecode(np.fromfile("D:\\中文名.png",dtype=np.uint8),cv2.IMREAD_COLOR)
+```
+
+
+当路径只有英文时，将'\'均改为'/'
+
+例如：
+```python
+import cv2
+cv2.imread("D:\\中文名.png")
+```
+
+改为：
+```python
+import cv2
+cv2.imread("D:\\中文名.png")
+```
+所以尽量还是用英文编码，或者使用mac哈哈哈，毕竟读取文件时也涉及到'gbk'和'utf-8'的转换
 
     
