@@ -212,4 +212,11 @@ cv2.imread("D:\\中文名.png")
 ```
 所以尽量还是用英文编码，或者使用mac哈哈哈，毕竟读取文件时也涉及到'gbk'和'utf-8'的转换
 
-    
+## 12. 显示ValueError: Expected more than 1 value per channel when training, got input size [1, 512, 1, 1]
++ 当Batch_size不为1时，DataLoader如果数据的数量是奇数，batch_size无法整除，会出现该问题。例如：图片数量
+为17张，然而batch_size为8，需要在DataLoader参数里面设置
+```python
+drop_last=True
+```    
++ 当Batch_size为1时，可能是图片本身size太小，无法经过连续的卷积+下采样。
+
