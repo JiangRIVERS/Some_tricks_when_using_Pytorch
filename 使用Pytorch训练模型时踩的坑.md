@@ -228,3 +228,20 @@ drop_last=True
 在__getitem__中进行读取和预处理。这样每次只IO一个数据并进行处理，不会出现OOM，但是每次涉及
 IO操作，多少会慢一点。
 
+## 14. CPU 爆memory
+我在训练的时候有个习惯，将一个epoch的所有loss加在一起，得到的total_loss除以
+每个epoch中所有的图片数量，得到这个epoch的平均loss，进行分析。
+
+然而
+```pyrhon
+total_loss+=loss
+``` 
+这种操作会爆CPU的memory，因为每次计算得到的loss包含之前所有计算的Autograd，所以
+随之循环次数的增加，total_loss会不断叠加到memory中，导致报错。
+
+可以改为
+```python
+total_loss+=loss.item()
+```
+这样没吃total_loss仅仅加上一张图的loss,问题解决。
+
