@@ -210,6 +210,12 @@ cv2.imread("D:\\中文名.png")
 import cv2
 cv2.imread("D:\\中文名.png")
 ```
+同样保存图片时：
+```python
+im=cv2.imdecode(np.fromfile('c:\\测试\\1.jpg',dtype=np.uint8),cv2.IMREAD_UNCHANGED)#打开含有中文路径的图片
+cv2.imencode('.jpg',im)[1].tofile('C:\\测试\\你好.jpg')#保存图片
+```
+
 所以尽量还是用英文编码，或者使用mac哈哈哈，毕竟读取文件时也涉及到'gbk'和'utf-8'的转换
 
 ## 12. 显示ValueError: Expected more than 1 value per channel when training, got input size [1, 512, 1, 1]
